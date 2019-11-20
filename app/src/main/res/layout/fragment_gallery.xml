@@ -7,8 +7,8 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapViewM"
-        android:layout_width="407dp"
-        android:layout_height="575dp"
+        android:layout_width="401dp"
+        android:layout_height="637dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
