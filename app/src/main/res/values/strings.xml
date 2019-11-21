@@ -18,4 +18,12 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="title_activity_map">Map</string>
+
+    <string name="no_tienes_cuenta">¿No tienes una cuenta?</string>
+    <string name="si_tienes_cuenta">¿Ya tienes una cuenta?</string>
+    <string name="login_registro">Registrate</string>
+    <string name="correo_electronico">Correo electronico</string>
+    <string name="nombre_y_apellido">Nombre y Apellido</string>
+    <string name="registrar">Registrar</string>
+
 </resources>

@@ -3,21 +3,20 @@ package com.example.paseandopaseador;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class Registro extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //linea para trabajar solo con la orientacion vertical
+        setContentView(R.layout.activity_registro);
     }
 
-    public void ctrlBotonIngresar(View view)
+
+
+    public void ctrlBtnRegistrar(View view)
     {
         Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
         startActivity(intent);
@@ -25,10 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void ctrlBtnReg(View view)
+    public void ctrlBotonIngresar(View view)
     {
-        Intent intent = new Intent(view.getContext(), Registro.class);
+        Intent intent = new Intent(view.getContext(), MainActivity.class);
         startActivity(intent);
     }
-
 }
