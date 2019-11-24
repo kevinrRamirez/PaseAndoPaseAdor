@@ -25,5 +25,6 @@
     <string name="correo_electronico">Correo electronico</string>
     <string name="nombre_y_apellido">Nombre y Apellido</string>
     <string name="registrar">Registrar</string>
+    <string name="conectate">Debes conectarte</string>
 
 </resources>
