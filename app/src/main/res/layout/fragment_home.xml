@@ -19,7 +19,7 @@
         android:id="@+id/swConetate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="7dp"
         android:text="Conectate"
         android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/mapHome"

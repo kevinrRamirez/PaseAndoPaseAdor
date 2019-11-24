@@ -26,5 +26,8 @@
     <string name="nombre_y_apellido">Nombre y Apellido</string>
     <string name="registrar">Registrar</string>
     <string name="conectate">Debes conectarte</string>
+    <string name="nombre_usuario">Nombre de Usuario</string>
+    <string name="menu_perfil">Perfil</string>
+
 
 </resources>
