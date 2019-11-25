@@ -12,6 +12,7 @@
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_perfil"
             android:title="@string/menu_perfil" />
+          <!--
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
@@ -20,18 +21,21 @@
             android:id="@+id/nav_tools"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/menu_tools" />
+            -->
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_share" />
+                android:id="@+id/nav_aceca"
+                android:icon="@drawable/ic_opciones"
+                android:title="@string/acerca_de"/>
+            <!--
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/menu_send" />
+                -->
         </menu>
     </item>
 

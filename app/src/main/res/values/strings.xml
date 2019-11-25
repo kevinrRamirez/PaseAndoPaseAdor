@@ -30,6 +30,7 @@
     <string name="menu_perfil">Perfil</string>
     <string name="aceptar_paseo">Aceptar Paseo</string>
     <string name="direccion">Dirección</string>
+    <string name="acerca_de">Acerca de</string>
 
 
 </resources>
