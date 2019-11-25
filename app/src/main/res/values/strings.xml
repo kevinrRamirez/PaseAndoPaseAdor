@@ -28,6 +28,8 @@
     <string name="conectate">Debes conectarte</string>
     <string name="nombre_usuario">Nombre de Usuario</string>
     <string name="menu_perfil">Perfil</string>
+    <string name="aceptar_paseo">Aceptar Paseo</string>
+    <string name="direccion">Dirección</string>
 
 
 </resources>
