@@ -60,7 +60,6 @@ public class Registro extends AppCompatActivity {
                 Toast.makeText(this, "Las contaseñas no coinciden", Toast.LENGTH_LONG).show();
             }else{
                 //servicio("http://192.168.1.66/paseando/registro_paseador.php"); //compu Orlas
-                //servicio("http://192.168.222.212/paseando/registro_paseador.php"); //compu Orlas tec
                 //servicio("http://192.168.209.23/paseando/registro_paseador.php"); //compu Kevin
 
                 Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
