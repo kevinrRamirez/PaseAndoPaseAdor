@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SolicitudPaseoActivity">
+    tools:context=".SolicitudPaseoActivity"
+    android:background="@drawable/huellas_fondo_soli">
 
     <Button
         android:id="@+id/button"
@@ -12,10 +13,13 @@
         android:layout_height="53dp"
         android:layout_marginBottom="92dp"
         android:text="@string/aceptar_paseo"
+        android:textColor="@color/colorPrimary2"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/bg_boton_solido"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -32,7 +36,7 @@
         android:id="@+id/imageView2"
         android:layout_width="311dp"
         android:layout_height="494dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

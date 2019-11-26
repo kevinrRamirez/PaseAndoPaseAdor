@@ -9,7 +9,7 @@
             android:icon="@drawable/ic_home"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_perfil"
             android:icon="@drawable/ic_perfil"
             android:title="@string/menu_perfil" />
           <!--
@@ -27,7 +27,7 @@
     <item android:title="">
         <menu>
             <item
-                android:id="@+id/nav_aceca"
+                android:id="@+id/nav_acerca"
                 android:icon="@drawable/ic_opciones"
                 android:title="@string/acerca_de"/>
             <!--

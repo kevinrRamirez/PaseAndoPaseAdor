@@ -20,9 +20,11 @@
 
     <EditText
         android:id="@+id/txtContrasenia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
         android:layout_marginTop="44dp"
+        android:backgroundTint="#FF196AB6"
+        android:drawableStart="@drawable/ic_key"
         android:ems="10"
         android:hint="@string/contrasenia"
         android:inputType="textPassword"
@@ -32,23 +34,28 @@
 
     <EditText
         android:id="@+id/txtCorreo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
         android:layout_marginTop="32dp"
+        android:backgroundTint="#FF196AB6"
+        android:drawableStart="@drawable/ic_mail"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="@string/correo_lectronico"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgPerfilLog" />
 
     <Button
         android:id="@+id/btnIngresar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:layout_marginTop="60dp"
+        android:background="@drawable/bg_boton_solido"
         android:onClick="ctrlBotonIngresar"
         android:text="@string/ingresar"
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
