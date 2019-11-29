@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.paseandopaseador.ui.Codigos;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class Registro extends AppCompatActivity {
     EditText txtCorreo;
     EditText txtPass;
     EditText txtPassConf;
+    Codigos c = new Codigos();
 
 
     @Override
@@ -46,11 +48,13 @@ public class Registro extends AppCompatActivity {
 
     public void ctrlBtnRegistrar(View view)
     {
+
         String nombre = txtNombre.getText().toString();
         String correo = txtCorreo.getText().toString();
         String pass = txtPass.getText().toString();
         String passConf = txtPassConf.getText().toString();
 
+        /*
         if (nombre.isEmpty() || correo.isEmpty() || pass.isEmpty() || passConf.isEmpty()) {
             Toast.makeText(this, "Todos los campos son requeridos", Toast.LENGTH_LONG).show();
         } else if (validacionNombreApellido(nombre) && validacionCorreo(correo)) {
@@ -59,25 +63,29 @@ public class Registro extends AppCompatActivity {
             } else if (!pass.equals(passConf)) {
                 Toast.makeText(this, "Las contaseñas no coinciden", Toast.LENGTH_LONG).show();
             }else{
-                //servicio("http://192.168.1.66/paseando/registro_paseador.php"); //compu Orlas
-                //servicio("http://192.168.209.23/paseando/registro_paseador.php"); //compu Kevin
 
                 Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
                 startActivity(intent);
             }
         }
+         */
 
 
 
 
 
 
-/*
-        servicio("http://192.168.1.66/paseando/registro_paseador.php"); //compu Orlas
+
+
+
+        //servicio("http://192.168.1.66/paseando/registro_paseador.php"); //compu Orlas
         //servicio("http://192.168.209.23/paseando/registro_paseador.php"); //compu Kevin
+
+
+        servicioRegistro(c.direccionIP+"registro_paseador.php");
         Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
         startActivity(intent);
- */
+
 
 
     }
@@ -90,7 +98,7 @@ public class Registro extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void servicio(String url)
+    public void servicioRegistro(String url)
     {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
