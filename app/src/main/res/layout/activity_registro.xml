@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginTop="190dp"
-
+        android:drawableTint="@color/colorPrimary"
         android:ems="10"
         android:hint="@string/nombre_y_apellido"
         android:inputType="textCapWords"
@@ -42,6 +42,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="@string/correo_electronico"
+        android:drawableTint="@color/colorPrimary"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +56,7 @@
         android:ems="10"
         android:hint="@string/contrasenia"
         android:inputType="textPassword"
+        android:drawableTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCorreo" />
@@ -90,7 +92,8 @@
         android:layout_marginTop="30dp"
 
         android:onClick="ctrlBtnRegistrar"
-        android:text="@string/registrar"
+        android:text="@string/aceptar"
+        android:background="@drawable/bg_boton_solido"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

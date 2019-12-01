@@ -22,11 +22,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class PaseAndoNavi extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     //Button btnPrueba = (Button) findViewById(R.id.btnPrueba);
+    TextView txtCorreoNav;
+    TextView txtNombreNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,15 @@ public class PaseAndoNavi extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //linea para trabajar solo con la orientacion vertical
 
+        Bundle datoCorreo = getIntent().getExtras();
+        String correo = datoCorreo.getString("datoCorreo");
+        String nombre = datoCorreo.getString("datoNombre");
+        View headerView = navigationView.getHeaderView(0);
+        txtCorreoNav = (TextView) headerView.findViewById(R.id.txtCorreoNav);
+        txtCorreoNav.setText(correo);
 
+        txtNombreNav = (TextView) headerView.findViewById(R.id.txtNombreNav);
+        txtNombreNav.setText(nombre);
 
     }
 

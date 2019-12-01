@@ -11,8 +11,27 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
+    RequestQueue requestQueue;
+    String nombre;
+    String correo;
+    String id;
+    String contrasenia;
+    EditText txtCorreo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +73,64 @@ public class MainActivity extends AppCompatActivity {
             // Permission has already been granted
         }
 
+        txtCorreo = (EditText) findViewById(R.id.txtCorreo);
+
+
+
+    }
+
+    public void buscarPaseador(String URL) {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                JSONObject jsonObject;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
+                        /*textView1.setText(jsonObject.getString("id_duenio"));
+                        textView1.setText(jsonObject.getString("nombre"));
+                        textView1.setText(jsonObject.getString("correo"));
+                        textView1.setText(jsonObject.getString("contrasenia"));
+                        textView1.setText(jsonObject.getString("paseo"));*/
+                        //textView1.setText(jsonObject.getString("correo")+"--"+jsonObject.getString("contrasenia"));
+                        //obtenerCorreo= jsonObject.optString("correo");
+                        //obtenerPass=jsonObject.optString("contrasenia");
+                        //s=jsonObject.getString("id_duenio")+jsonObject.getString("nombre")+jsonObject.getString("correo")+jsonObject.getString("contrasenia")+jsonObject.getString("paseo");
+                        //textView1.setText(s);
+                        id = jsonObject.getString("id_paseador");
+                        nombre = jsonObject.getString("nombre_paseador");
+                        correo = jsonObject.getString("correo_paseador");
+                        contrasenia = jsonObject.getString("contrsenia_paseador");
+                        Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
+
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage()+"hhhhh", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error de conexión xd", Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonArrayRequest);
     }
 
     public void ctrlBotonIngresar(View view)
     {
         Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
+        intent.putExtra("datoId",id);
+        intent.putExtra("datoNombre",nombre);
+        intent.putExtra("datoCorreo",correo);
+        intent.putExtra("datoContrasenia",contrasenia);
         startActivity(intent);
+
+        String url = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
+        buscarPaseador(url);
     }
 
 

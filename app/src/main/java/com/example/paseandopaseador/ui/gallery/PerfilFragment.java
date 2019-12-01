@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,8 @@ import com.example.paseandopaseador.R;
 public class PerfilFragment extends Fragment  {
 
     private PerfilViewModel galleryViewModel;
+    TextView txtNombre;
+    TextView txtCorreo;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -31,6 +34,11 @@ public class PerfilFragment extends Fragment  {
         });
 
          */
+        Bundle dato = getActivity().getIntent().getExtras();
+        txtCorreo = (TextView) root.findViewById(R.id.txtCorreoElectronico);
+        txtCorreo.setText(dato.getString("datoCorreo"));
+        txtNombre = (TextView) root.findViewById(R.id.txtNombreUsuario);
+        txtNombre.setText(dato.getString("datoNombre"));
 
         return root;
     }

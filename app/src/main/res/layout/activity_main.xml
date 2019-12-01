@@ -41,7 +41,7 @@
         android:drawableStart="@drawable/ic_mail"
         android:ems="10"
         android:hint="@string/correo_lectronico"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgPerfilLog" />

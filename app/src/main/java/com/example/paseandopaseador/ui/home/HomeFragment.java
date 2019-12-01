@@ -3,6 +3,7 @@ package com.example.paseandopaseador.ui.home;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -111,20 +112,28 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacion,15));
 
-        swConecta.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if (b == true)
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("save", Context.MODE_PRIVATE);
+
+        swConecta.setChecked(sharedPreferences.getBoolean("value",true));
+        swConecta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (swConecta.isChecked())
                 {
-                    conectado = true;
+                    SharedPreferences.Editor editor = getActivity().getSharedPreferences("save", Context.MODE_PRIVATE).edit();
+                    editor.putBoolean("value",true);
+                    editor.apply();
+                    swConecta.setChecked(true);
                     lblConecta.setVisibility(View.INVISIBLE);
                 }else
                 {
-                    conectado = false;
+                    SharedPreferences.Editor editor = getActivity().getSharedPreferences("save", Context.MODE_PRIVATE).edit();
+                    editor.putBoolean("value",false);
+                    editor.apply();
+                    swConecta.setChecked(false);
                     lblConecta.setVisibility(View.VISIBLE);
                 }
-
             }
         });
 

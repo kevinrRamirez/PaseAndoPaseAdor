@@ -83,9 +83,11 @@ public class Registro extends AppCompatActivity {
 
 
         servicioRegistro(c.direccionIP+"registro_paseador.php");
-        Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
-        startActivity(intent);
 
+        //Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
+        //startActivity(intent);
+
+        finish();
 
 
     }

@@ -8,8 +8,8 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapHome"
-        android:layout_width="match_parent"
-        android:layout_height="634dp"
+        android:layout_width="410dp"
+        android:layout_height="576dp"
         android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -44,5 +44,19 @@
         app:layout_constraintHorizontal_bias="0.107"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnActualizar"
+        android:layout_width="153dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/bg_boton_solido"
+        android:gravity="center"
+        android:text="@string/actualizar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mapHome" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
