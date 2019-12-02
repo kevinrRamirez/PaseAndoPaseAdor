@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         lblConecta = (TextView) v.findViewById(R.id.lblConectate);
-        lblConecta.setVisibility(View.VISIBLE);
+        lblConecta.setVisibility(View.INVISIBLE);
         swConecta = (Switch) v.findViewById(R.id.swConetate);
         mapView = (MapView) v.findViewById(R.id.mapHome);
         mapView.onCreate(savedInstanceState);
@@ -126,6 +126,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     editor.apply();
                     swConecta.setChecked(true);
                     lblConecta.setVisibility(View.INVISIBLE);
+                    conectado = true;
                 }else
                 {
                     SharedPreferences.Editor editor = getActivity().getSharedPreferences("save", Context.MODE_PRIVATE).edit();

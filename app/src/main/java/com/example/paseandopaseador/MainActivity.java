@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     String id;
     String contrasenia;
     EditText txtCorreo;
+    Switch swConecta;
+    Button btnActualiza;
 
 
     @Override
@@ -74,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         txtCorreo = (EditText) findViewById(R.id.txtCorreo);
-
-
+        btnActualiza = (Button) findViewById(R.id.btnActualizar);
+        swConecta = (Switch) findViewById(R.id.swConetate);
 
     }
 
@@ -97,6 +100,46 @@ public class MainActivity extends AppCompatActivity {
                         //obtenerPass=jsonObject.optString("contrasenia");
                         //s=jsonObject.getString("id_duenio")+jsonObject.getString("nombre")+jsonObject.getString("correo")+jsonObject.getString("contrasenia")+jsonObject.getString("paseo");
                         //textView1.setText(s);
+                        id = jsonObject.getString("id_paseador");
+                        nombre = jsonObject.getString("nombre_paseador");
+                        correo = jsonObject.getString("correo_paseador");
+                        contrasenia = jsonObject.getString("contrsenia_paseador");
+                        Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
+
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage()+"hhhhh", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error de conexión xd", Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    public void actualizar()
+    {
+        if (swConecta.isChecked())
+        {
+
+        }
+    }
+
+
+    public void buscarPaseo(String URL) {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                JSONObject jsonObject;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
                         id = jsonObject.getString("id_paseador");
                         nombre = jsonObject.getString("nombre_paseador");
                         correo = jsonObject.getString("correo_paseador");
