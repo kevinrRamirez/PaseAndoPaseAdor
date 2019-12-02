@@ -31,9 +31,10 @@ public class MainActivity extends AppCompatActivity {
     String correo;
     String id;
     String contrasenia;
-    EditText txtCorreo;
+    EditText txtCorreo,txtPass;
     Switch swConecta;
     Button btnActualiza;
+    Codigos c = new Codigos();
 
 
     @Override
@@ -41,20 +42,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //linea para trabajar solo con la orientacion vertical
-
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
         }
-
-
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -75,11 +71,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Permission has already been granted
         }
-
         txtCorreo = (EditText) findViewById(R.id.txtCorreo);
+        txtPass = (EditText) findViewById(R.id.txtPass);
         btnActualiza = (Button) findViewById(R.id.btnActualizar);
         swConecta = (Switch) findViewById(R.id.swConetate);
-
     }
 
     public void buscarPaseador(String URL) {
@@ -90,22 +85,11 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         jsonObject = response.getJSONObject(i);
-                        /*textView1.setText(jsonObject.getString("id_duenio"));
-                        textView1.setText(jsonObject.getString("nombre"));
-                        textView1.setText(jsonObject.getString("correo"));
-                        textView1.setText(jsonObject.getString("contrasenia"));
-                        textView1.setText(jsonObject.getString("paseo"));*/
-                        //textView1.setText(jsonObject.getString("correo")+"--"+jsonObject.getString("contrasenia"));
-                        //obtenerCorreo= jsonObject.optString("correo");
-                        //obtenerPass=jsonObject.optString("contrasenia");
-                        //s=jsonObject.getString("id_duenio")+jsonObject.getString("nombre")+jsonObject.getString("correo")+jsonObject.getString("contrasenia")+jsonObject.getString("paseo");
-                        //textView1.setText(s);
                         id = jsonObject.getString("id_paseador");
                         nombre = jsonObject.getString("nombre_paseador");
                         correo = jsonObject.getString("correo_paseador");
                         contrasenia = jsonObject.getString("contrsenia_paseador");
-                        Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
-
+                        loDeIntent();
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage()+"hhhhh", Toast.LENGTH_SHORT).show();
                     }
@@ -131,6 +115,48 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void ctrlBotonIngresar(View view)
+    {
+        String url = c.direccionIP+"buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
+        buscarPaseador(url);
+    }
+
+    public void loDeIntent() {
+        String sCo, sPa;
+        sCo=txtCorreo.getText().toString();
+        sPa=txtPass.getText().toString();
+        if (c.hacerValidaciones = true) {
+            if (sCo.isEmpty() || sPa.isEmpty()) {
+                Toast.makeText(this, "Todos los campos son requeridos", Toast.LENGTH_LONG).show();
+            } else if (!c.validacionCorreo(sCo)) {
+                Toast.makeText(this, "Correo invalido", Toast.LENGTH_LONG).show();
+            } else if (!(sPa.length() >= 6)) {
+                Toast.makeText(this, "Se requiere una contraseña mayor a 5 caracteres", Toast.LENGTH_LONG).show();
+            } else if (!sPa.equals(contrasenia)) {
+                Toast.makeText(this, "Verifica la contraseña", Toast.LENGTH_LONG).show();
+            }else {
+
+                Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
+                intent.putExtra("datoId", id);
+                intent.putExtra("datoNombre", nombre);
+                intent.putExtra("datoCorreo", correo);
+                intent.putExtra("datoContrasenia", contrasenia);
+                startActivity(intent);
+            }
+
+            } else  if (!sPa.equals(contrasenia)){
+            Toast.makeText(this, "Verifica la contraseña", Toast.LENGTH_LONG).show();
+
+            }else{
+            Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
+            intent.putExtra("datoId", id);
+            intent.putExtra("datoNombre", nombre);
+            intent.putExtra("datoCorreo", correo);
+            intent.putExtra("datoContrasenia", contrasenia);
+            startActivity(intent);
+
+        }
+        }
 
     public void buscarPaseo(String URL) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
@@ -144,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
                         nombre = jsonObject.getString("nombre_paseador");
                         correo = jsonObject.getString("correo_paseador");
                         contrasenia = jsonObject.getString("contrsenia_paseador");
-                        Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
 
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage()+"hhhhh", Toast.LENGTH_SHORT).show();
@@ -163,18 +188,6 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
     }
 
-    public void ctrlBotonIngresar(View view)
-    {
-        Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
-        intent.putExtra("datoId",id);
-        intent.putExtra("datoNombre",nombre);
-        intent.putExtra("datoCorreo",correo);
-        intent.putExtra("datoContrasenia",contrasenia);
-        startActivity(intent);
-
-        String url = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
-        buscarPaseador(url);
-    }
 
 
 
