@@ -15,15 +15,21 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     RequestQueue requestQueue;
@@ -35,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     Switch swConecta;
     Button btnActualiza;
     Codigos c = new Codigos();
+
 
 
     @Override
@@ -166,13 +173,27 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         jsonObject = response.getJSONObject(i);
-                        id = jsonObject.getString("id_paseador");
-                        nombre = jsonObject.getString("nombre_paseador");
-                        correo = jsonObject.getString("correo_paseador");
-                        contrasenia = jsonObject.getString("contrsenia_paseador");
+
+                        /*textView1.setText(jsonObject.getString("id_duenio"));
+                        textView1.setText(jsonObject.getString("nombre"));
+                        textView1.setText(jsonObject.getString("correo"));
+                        textView1.setText(jsonObject.getString("contrasenia"));
+                        textView1.setText(jsonObject.getString("paseo"));*/
+                        //textView1.setText(jsonObject.getString("correo")+"--"+jsonObject.getString("contrasenia"));
+                        //obtenerCorreo= jsonObject.optString("correo");
+                        //obtenerPass=jsonObject.optString("contrasenia");
+                        //s=jsonObject.getString("id_duenio")+jsonObject.getString("nombre")+jsonObject.getString("correo")+jsonObject.getString("contrasenia")+jsonObject.getString("paseo");
+                        //textView1.setText(s);
+                        id = jsonObject.getString("id_duenio");
+                        nombre = jsonObject.getString("nombre");
+                        //corre = jsonObject.getString("correo");
+                        contrasenia = jsonObject.getString("contrasenia");
+                        //paseo = jsonObject.getString("paseo");
+
+                        Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
 
                     } catch (JSONException e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage()+"hhhhh", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -189,6 +210,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void ctrlBotonIngresar(View view)
+    {
+        Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
+        intent.putExtra("datoId",id);
+        intent.putExtra("datoNombre",nombre);
+        intent.putExtra("datoCorreo",correo);
+        intent.putExtra("datoContrasenia",contrasenia);
+        startActivity(intent);
+
+        String url = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
+        buscarPaseador(url);
+        actulizaIdContrato("http://192.168.100.119/prueba/update_paseador.php");
+    }
+
+
 
 
     public void ctrlBtnReg(View view)
@@ -196,5 +232,32 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(view.getContext(), Registro.class);
         startActivity(intent);
     }
+
+    public void actulizaIdContrato(String URL)
+    {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getApplicationContext(), "Actualizacion exitosa xd", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error al actualizar xd -> "+error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<String, String>();
+                parametros.put("id_paseador",id);//txtNombre.getText().toString()
+                //parametros.put("correo",correo);//txtCorreo.getText().toString()
+                return parametros;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+
 
 }
