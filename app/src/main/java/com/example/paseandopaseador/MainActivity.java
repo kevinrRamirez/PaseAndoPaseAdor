@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     EditText txtCorreo;
     Switch swConecta;
     Button btnActualiza;
+    Codigos c;
 
 
 
@@ -134,9 +135,20 @@ public class MainActivity extends AppCompatActivity {
     {
         if (swConecta.isChecked())
         {
-
+            buscarPaseo(c.direccionIP+"buscar_paseo.php"+id);
+        }else
+        {
+            Toast.makeText(getApplicationContext(),"Conectate Primero",Toast.LENGTH_LONG).show();
         }
     }
+    String id_contrato;
+    String latitud;
+    String longitud;
+    String id_paseador;
+    String id_mascota;
+    String hora_inicio;
+    String hora_fin;
+    String costo;
 
 
     public void buscarPaseo(String URL) {
@@ -147,23 +159,16 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         jsonObject = response.getJSONObject(i);
-                        /*textView1.setText(jsonObject.getString("id_duenio"));
-                        textView1.setText(jsonObject.getString("nombre"));
-                        textView1.setText(jsonObject.getString("correo"));
-                        textView1.setText(jsonObject.getString("contrasenia"));
-                        textView1.setText(jsonObject.getString("paseo"));*/
-                        //textView1.setText(jsonObject.getString("correo")+"--"+jsonObject.getString("contrasenia"));
-                        //obtenerCorreo= jsonObject.optString("correo");
-                        //obtenerPass=jsonObject.optString("contrasenia");
-                        //s=jsonObject.getString("id_duenio")+jsonObject.getString("nombre")+jsonObject.getString("correo")+jsonObject.getString("contrasenia")+jsonObject.getString("paseo");
-                        //textView1.setText(s);
-                        id = jsonObject.getString("id_duenio");
-                        nombre = jsonObject.getString("nombre");
-                        //corre = jsonObject.getString("correo");
-                        contrasenia = jsonObject.getString("contrasenia");
-                        //paseo = jsonObject.getString("paseo");
+                        id_contrato = jsonObject.getString("id_contrato");
+                        latitud = jsonObject.getString("latitud");
+                        longitud = jsonObject.getString("longitud");
+                        id_paseador = jsonObject.getString("id_paseador");
+                        id_mascota = jsonObject.getString("id_mascota");
+                        hora_inicio = jsonObject.getString("hora_inicio");
+                        hora_fin= jsonObject.getString("hora_fin");
+                        costo = jsonObject.getString("costo");
 
-                        Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "XD...", Toast.LENGTH_SHORT).show();
 
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
