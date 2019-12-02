@@ -40,14 +40,6 @@ public class MainActivity extends AppCompatActivity {
     EditText txtCorreo;
     Switch swConecta;
     Button btnActualiza;
-    String idMas ;
-    String idDue;
-    String nombreMas;
-    String tamanio;
-    String cuidados;
-    String raza;
-    String edad;
-    String seguro;
 
 
 
@@ -201,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
         String url = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
         buscarPaseador(url);
-        actulizaIdContrato("http://192.168.100.119/prueba/update_paseador.php?id_mascota=");
+        actulizaIdContrato("http://192.168.100.119/prueba/update_paseador.php");
     }
 
 
@@ -237,38 +229,6 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    public void buscarMascota(String URL) {
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                JSONObject jsonObject;
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        jsonObject = response.getJSONObject(i);
-                        idMas = jsonObject.getString("id_mascota");
-                        idDue = jsonObject.getString("id_duenio");
-                        nombreMas = jsonObject.getString("nombre_mascota");
-                        tamanio = jsonObject.getString("tamanio");
-                        cuidados = jsonObject.getString("cuidados");
-                        raza = jsonObject.getString("raza");
-                        edad = jsonObject.getString("edad");
-                        seguro = jsonObject.getString("id_seguro");
-                        //loDelIntent();
-                        //Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
-                    } catch (JSONException e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Vuelve a intentarlo xd x2", Toast.LENGTH_SHORT).show();
-            }
-        }
-        );
-        requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(jsonArrayRequest);
-    }
+
 
 }
