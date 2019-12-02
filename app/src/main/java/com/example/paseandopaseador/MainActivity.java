@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
         String url = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
         buscarPaseador(url);
-        actulizaIdContrato("http://192.168.100.119/prueba/update_paseador.php");
+        //actulizaIdContrato("http://192.168.100.119/prueba/update_paseador.php");
     }
 
 
