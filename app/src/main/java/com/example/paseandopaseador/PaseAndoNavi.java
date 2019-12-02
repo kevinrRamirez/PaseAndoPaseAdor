@@ -1,6 +1,8 @@
 package com.example.paseandopaseador;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,10 +13,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 
@@ -34,6 +39,9 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PaseAndoNavi extends AppCompatActivity {
 
@@ -132,14 +140,10 @@ public class PaseAndoNavi extends AppCompatActivity {
 
     public void actualizar(View view)
     {
-        if (swConecta.isChecked())
-        {
-            buscarPaseo(c.direccionIP+"buscar_paseo.php"+id);
-        }else
-        {
-            Toast.makeText(getApplicationContext(),"Conectate Primero",Toast.LENGTH_LONG).show();
-        }
+        buscarPaseo(c.direccionIP+"buscar_paseo.php?id_paseador="+id);
+       // actulizaIdContrato("http://192.168.100.119/prueba/update_paseador.php");
     }
+
     String id_contrato;
     String latitud;
     String longitud;
@@ -184,5 +188,29 @@ public class PaseAndoNavi extends AppCompatActivity {
         );
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonArrayRequest);
+    }
+    public void actulizaIdContrato(String URL)
+    {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getApplicationContext(), "Actualizacion exitosa xd", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error al actualizar xd COTRATO -> "+id+error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<String, String>();
+                parametros.put("id_paseador",id);//txtNombre.getText().toString()
+                //parametros.put("correo",correo);//txtCorreo.getText().toString()
+                return parametros;
+            }
+        };
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 }

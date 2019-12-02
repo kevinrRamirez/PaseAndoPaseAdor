@@ -30,6 +30,7 @@
         android:drawableTint="@color/colorPrimary"
         android:ems="10"
         android:hint="@string/nombre_y_apellido"
+        android:backgroundTint="@color/colorPrimary"
         android:inputType="textCapWords"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
