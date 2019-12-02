@@ -42,27 +42,20 @@ public class MainActivity extends AppCompatActivity {
     Button btnActualiza;
     Codigos c;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //linea para trabajar solo con la orientacion vertical
-
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
         }
-
-
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -75,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         1);
-
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
@@ -83,11 +75,22 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Permission has already been granted
         }
-
         txtCorreo = (EditText) findViewById(R.id.txtCorreo);
         btnActualiza = (Button) findViewById(R.id.btnActualizar);
         swConecta = (Switch) findViewById(R.id.swConetate);
+    }
+    public void ctrlBotonIngresar(View view)
+    {
+        Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
+        intent.putExtra("datoId",id);
+        intent.putExtra("datoNombre",nombre);
+        intent.putExtra("datoCorreo",correo);
+        intent.putExtra("datoContrasenia",contrasenia);
+        startActivity(intent);
 
+        String url = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
+        buscarPaseador(url);
+        //actulizaIdContrato("http://192.168.100.119/prueba/update_paseador.php");
     }
 
     public void buscarPaseador(String URL) {
@@ -98,27 +101,15 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         jsonObject = response.getJSONObject(i);
-                        /*textView1.setText(jsonObject.getString("id_duenio"));
-                        textView1.setText(jsonObject.getString("nombre"));
-                        textView1.setText(jsonObject.getString("correo"));
-                        textView1.setText(jsonObject.getString("contrasenia"));
-                        textView1.setText(jsonObject.getString("paseo"));*/
-                        //textView1.setText(jsonObject.getString("correo")+"--"+jsonObject.getString("contrasenia"));
-                        //obtenerCorreo= jsonObject.optString("correo");
-                        //obtenerPass=jsonObject.optString("contrasenia");
-                        //s=jsonObject.getString("id_duenio")+jsonObject.getString("nombre")+jsonObject.getString("correo")+jsonObject.getString("contrasenia")+jsonObject.getString("paseo");
-                        //textView1.setText(s);
                         id = jsonObject.getString("id_paseador");
                         nombre = jsonObject.getString("nombre_paseador");
                         correo = jsonObject.getString("correo_paseador");
                         contrasenia = jsonObject.getString("contrsenia_paseador");
                         Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
-
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage()+"hhhhh", Toast.LENGTH_SHORT).show();
                     }
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -131,16 +122,6 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
     }
 
-    public void actualizar()
-    {
-        if (swConecta.isChecked())
-        {
-            buscarPaseo(c.direccionIP+"buscar_paseo.php"+id);
-        }else
-        {
-            Toast.makeText(getApplicationContext(),"Conectate Primero",Toast.LENGTH_LONG).show();
-        }
-    }
     String id_contrato;
     String latitud;
     String longitud;
@@ -167,14 +148,11 @@ public class MainActivity extends AppCompatActivity {
                         hora_inicio = jsonObject.getString("hora_inicio");
                         hora_fin= jsonObject.getString("hora_fin");
                         costo = jsonObject.getString("costo");
-
                         Toast.makeText(getApplicationContext(), "XD...", Toast.LENGTH_SHORT).show();
-
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -187,26 +165,22 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
     }
 
-    public void ctrlBotonIngresar(View view)
-    {
-        Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
-        intent.putExtra("datoId",id);
-        intent.putExtra("datoNombre",nombre);
-        intent.putExtra("datoCorreo",correo);
-        intent.putExtra("datoContrasenia",contrasenia);
-        startActivity(intent);
-
-        String url = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
-        buscarPaseador(url);
-        //actulizaIdContrato("http://192.168.100.119/prueba/update_paseador.php");
-    }
-
-
-
     public void ctrlBtnReg(View view)
     {
         Intent intent = new Intent(view.getContext(), Registro.class);
         startActivity(intent);
+    }
+
+
+    public void actualizar()
+    {
+        if (swConecta.isChecked())
+        {
+            buscarPaseo(c.direccionIP+"buscar_paseo.php"+id);
+        }else
+        {
+            Toast.makeText(getApplicationContext(),"Conectate Primero",Toast.LENGTH_LONG).show();
+        }
     }
 
     public void actulizaIdContrato(String URL)
