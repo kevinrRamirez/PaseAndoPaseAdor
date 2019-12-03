@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {//comentario
     EditText txtCorreo,txtContrasenia;
     Switch swConecta;
     Button btnActualiza;
-    Codigos c;
+    Codigos c = new Codigos();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {//comentario
                             }else if(!(sPa.length() >= 6)){
                                 Toast.makeText(getApplicationContext(), "Se requiere una contraseña mayor a 5 caracteres", Toast.LENGTH_LONG).show();
                             }else{
-                                if(sCo.equals(contrasenia)){
+                                if(sPa.equals(contrasenia)){
                                     Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
                                     intent.putExtra("datoId",id);
                                     intent.putExtra("datoNombre",nombre);
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {//comentario
                                 }
                             }
                         }else{
-                            if(sCo.equals(contrasenia)){
+                            if(sPa.equals(contrasenia)){
                                 Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
                                 intent.putExtra("datoId",id);
                                 intent.putExtra("datoNombre",nombre);
