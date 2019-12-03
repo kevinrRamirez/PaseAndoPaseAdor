@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {//comentario
     String correo;
     String id;
     String contrasenia;
-    EditText txtCorreo;
+    EditText txtCorreo,txtContrasenia;
     Switch swConecta;
     Button btnActualiza;
     Codigos c;
@@ -76,21 +76,14 @@ public class MainActivity extends AppCompatActivity {//comentario
             // Permission has already been granted
         }
         txtCorreo = (EditText) findViewById(R.id.txtCorreo);
+        txtContrasenia = (EditText) findViewById(R.id.txtContrasenia);
         btnActualiza = (Button) findViewById(R.id.btnActualizarNav);
         swConecta = (Switch) findViewById(R.id.swConetate);
     }
     public void ctrlBotonIngresar(View view)
     {
-        Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
-        intent.putExtra("datoId",id);
-        intent.putExtra("datoNombre",nombre);
-        intent.putExtra("datoCorreo",correo);
-        intent.putExtra("datoContrasenia",contrasenia);
-        startActivity(intent);
-
-        String url = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
+        String url = c.direccionIP+"buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
         buscarPaseador(url);
-        //actulizaIdContrato("http://192.168.100.119/prueba/update_paseador.php");
     }
 
     public void buscarPaseador(String URL) {
@@ -106,15 +99,49 @@ public class MainActivity extends AppCompatActivity {//comentario
                         correo = jsonObject.getString("correo_paseador");
                         contrasenia = jsonObject.getString("contrsenia_paseador");
                         Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
+                        String sCo=txtCorreo.getText().toString();
+                        String sPa= txtContrasenia.getText().toString();
+                        //validaciones
+                        if (c.hacerValidaciones){
+                            if (sCo.isEmpty()||sPa.isEmpty()){
+                                Toast.makeText(getApplicationContext(), "Todos los campos son requeridos", Toast.LENGTH_LONG).show();
+                            }else if(!c.validacionCorreo(sCo)){
+                                Toast.makeText(getApplicationContext(), "Correo invalido", Toast.LENGTH_LONG).show();
+                            }else if(!(sPa.length() >= 6)){
+                                Toast.makeText(getApplicationContext(), "Se requiere una contraseña mayor a 5 caracteres", Toast.LENGTH_LONG).show();
+                            }else{
+                                if(sCo.equals(contrasenia)){
+                                    Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
+                                    intent.putExtra("datoId",id);
+                                    intent.putExtra("datoNombre",nombre);
+                                    intent.putExtra("datoCorreo",correo);
+                                    intent.putExtra("datoContrasenia",contrasenia);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }else{
+                            if(sCo.equals(contrasenia)){
+                                Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
+                                intent.putExtra("datoId",id);
+                                intent.putExtra("datoNombre",nombre);
+                                intent.putExtra("datoCorreo",correo);
+                                intent.putExtra("datoContrasenia",contrasenia);
+                                startActivity(intent);
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     } catch (JSONException e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage()+"hhhhh", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), e.getMessage()+"Intentalo de nuevo", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error de conexión xd", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Intentalo de nuevo", Toast.LENGTH_SHORT).show();
             }
         }
         );
