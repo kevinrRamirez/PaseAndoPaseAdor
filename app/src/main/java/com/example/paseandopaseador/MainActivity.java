@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {//comentario
             // Permission has already been granted
         }
         txtCorreo = (EditText) findViewById(R.id.txtCorreo);
-        btnActualiza = (Button) findViewById(R.id.btnActualizar);
+        btnActualiza = (Button) findViewById(R.id.btnActualizarNav);
         swConecta = (Switch) findViewById(R.id.swConetate);
     }
     public void ctrlBotonIngresar(View view)

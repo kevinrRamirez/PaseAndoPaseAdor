@@ -8,27 +8,27 @@
     android:background="@drawable/huellas_fondo_soli">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnAcpetaPas"
         android:layout_width="334dp"
         android:layout_height="53dp"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="156dp"
+        android:background="@drawable/bg_boton_solido"
         android:text="@string/aceptar_paseo"
         android:textColor="@color/colorPrimary2"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/bg_boton_solido"/>
+        app:layout_constraintHorizontal_bias="0.649"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtDatos"
         android:layout_width="239dp"
         android:layout_height="37dp"
-        android:layout_marginBottom="88dp"
-        android:text="@string/direccion"
+        android:layout_marginBottom="40dp"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        android:text="@string/direccion"
+        app:layout_constraintBottom_toTopOf="@+id/btnAcpetaPas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -37,8 +37,22 @@
         android:layout_width="311dp"
         android:layout_height="494dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintBottom_toTopOf="@+id/txtDatos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@mipmap/perros" />
+
+    <Button
+        android:id="@+id/btnPaseoListo"
+        android:layout_width="188dp"
+        android:layout_height="61dp"
+        android:layout_marginBottom="72dp"
+        android:background="@drawable/bg_boton_solido"
+        android:text="@string/ir_al_paseo"
+        android:textColor="@color/colorPrimary2"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

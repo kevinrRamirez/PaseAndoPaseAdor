@@ -103,10 +103,11 @@ public class PaseAndoNavi extends AppCompatActivity {
 
     }
 
-    public void prbBoton(View view) {
+    public void prbBotonActualizar(View view) {
         Intent intent = new Intent(view.getContext(), SolicitudPaseoActivity.class);
         startActivity(intent);
     }
+
 
 
     @Override
@@ -140,8 +141,7 @@ public class PaseAndoNavi extends AppCompatActivity {
 
     public void actualizar(View view)
     {
-        buscarPaseo(c.direccionIP+"buscar_paseo.php?id_paseador="+id);
-       // actulizaIdContrato("http://192.168.100.119/prueba/update_paseador.php");
+     consultaDatosPaseo(c.direccionIP+"select_all_contrato.php");
     }
 
     String id_contrato;
@@ -153,8 +153,7 @@ public class PaseAndoNavi extends AppCompatActivity {
     String hora_fin;
     String costo;
 
-
-    public void buscarPaseo(String URL) {
+    public void consultaDatosPaseo(String URL) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -168,10 +167,25 @@ public class PaseAndoNavi extends AppCompatActivity {
                         id_paseador = jsonObject.getString("id_paseador");
                         id_mascota = jsonObject.getString("id_mascota");
                         hora_inicio = jsonObject.getString("hora_inicio");
-                        hora_fin= jsonObject.getString("hora_fin");
+                        hora_fin = jsonObject.getString("hora_fin");
                         costo = jsonObject.getString("costo");
 
-                        Toast.makeText(getApplicationContext(), "XD...", Toast.LENGTH_SHORT).show();
+
+                        /*
+                        Intent intent = new Intent(PaseAndoNavi.this, SolicitudPaseoActivity.class);
+                        intent.putExtra("datoIdContrato",id_contrato);
+                        intent.putExtra("datoLatitud",latitud);
+                        intent.putExtra("datoLongitud",longitud);
+                        intent.putExtra("datoIdPaseador",id_paseador);
+                        intent.putExtra("datoIdMascota",id_mascota);
+                        intent.putExtra("datoHoraIni",hora_inicio);
+                        intent.putExtra("datoHoraFin",hora_fin);
+                        intent.putExtra("datoCosto",costo);
+                        startActivity(intent);
+                        //Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
+
+                         */
+
 
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -182,35 +196,12 @@ public class PaseAndoNavi extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error de conexión xd", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error de conexión xd#", Toast.LENGTH_SHORT).show();
             }
         }
         );
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonArrayRequest);
     }
-    public void actulizaIdContrato(String URL)
-    {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(getApplicationContext(), "Actualizacion exitosa xd", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error al actualizar xd COTRATO -> "+id+error.toString(), Toast.LENGTH_LONG).show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parametros = new HashMap<String, String>();
-                parametros.put("id_paseador",id);//txtNombre.getText().toString()
-                //parametros.put("correo",correo);//txtCorreo.getText().toString()
-                return parametros;
-            }
-        };
-        requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
+
 }
