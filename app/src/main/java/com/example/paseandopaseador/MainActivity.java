@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {//comentario
     }
     public void ctrlBotonIngresar(View view)
     {
-        String url2 = c.direccionIP+"buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
+        String url2 = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
         buscarPaseador(url2);
     }
 
