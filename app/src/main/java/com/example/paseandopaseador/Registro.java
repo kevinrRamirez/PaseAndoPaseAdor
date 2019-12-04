@@ -46,48 +46,34 @@ public class Registro extends AppCompatActivity {
 
     public void ctrlBtnRegistrar(View view)
     {
-
         String nombre = txtNombre.getText().toString();
         String correo = txtCorreo.getText().toString();
         String pass = txtPass.getText().toString();
         String passConf = txtPassConf.getText().toString();
 
-        /*
-        if (nombre.isEmpty() || correo.isEmpty() || pass.isEmpty() || passConf.isEmpty()) {
-            Toast.makeText(this, "Todos los campos son requeridos", Toast.LENGTH_LONG).show();
-        } else if (validacionNombreApellido(nombre) && validacionCorreo(correo)) {
-            if (!(pass.length() >= 6)) {
+        if(c.hacerValidaciones) {
+            if (nombre.isEmpty() || correo.isEmpty() || pass.isEmpty() || passConf.isEmpty()) {//todos los campos son requeridos
+                Toast.makeText(this, "Todos los campos son requeridos", Toast.LENGTH_LONG).show();
+            } else if (!c.validacionNombreApellido(nombre)) {//no es Nombre Apellido
+                Toast.makeText(this, "Ingresar Nombre y Apellido de forma correcta", Toast.LENGTH_LONG).show();
+            } else if (!c.validacionCorreo(correo)) {
+                Toast.makeText(this, "Correo electronico invalido", Toast.LENGTH_LONG).show();
+            } else if (!(pass.length() >= 6)) {
                 Toast.makeText(this, "Se requiere una contraseña mayor a 5 caracteres", Toast.LENGTH_LONG).show();
             } else if (!pass.equals(passConf)) {
                 Toast.makeText(this, "Las contaseñas no coinciden", Toast.LENGTH_LONG).show();
-            }else{
-
-                Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
-                startActivity(intent);
+            } else {
+                servicioRegistro(c.direccionIP+"registro_paseador.php");
+                //Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
+                //startActivity(intent);
+                finish();
             }
+        }else{
+            servicioRegistro(c.direccionIP+"registro_paseador.php");
+            //Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
+            //startActivity(intent);
+            finish();
         }
-         */
-
-
-
-
-
-
-
-
-
-        //servicio("http://192.168.1.66/paseando/registro_paseador.php"); //compu Orlas
-        //servicio("http://192.168.209.23/paseando/registro_paseador.php"); //compu Kevin
-
-
-        servicioRegistro(c.direccionIP+"registro_paseador.php");
-
-        //Intent intent = new Intent(view.getContext(), PaseAndoNavi.class);
-        //startActivity(intent);
-
-        finish();
-
-
     }
 
 

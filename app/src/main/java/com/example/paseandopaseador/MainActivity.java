@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {//comentario
                         nombre = jsonObject.getString("nombre_paseador");
                         correo = jsonObject.getString("correo_paseador");
                         contrasenia = jsonObject.getString("contrsenia_paseador");
-                        Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
                         String sCo=txtCorreo.getText().toString();
                         String sPa= txtContrasenia.getText().toString();
                         //validaciones
@@ -111,6 +110,9 @@ public class MainActivity extends AppCompatActivity {//comentario
                                 Toast.makeText(getApplicationContext(), "Se requiere una contraseña mayor a 5 caracteres", Toast.LENGTH_LONG).show();
                             }else{
                                 if(sPa.equals(contrasenia)){
+                                    txtCorreo.setText("");
+                                    txtContrasenia.setText("");
+                                    Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
                                     intent.putExtra("datoId",id);
                                     intent.putExtra("datoNombre",nombre);
@@ -123,6 +125,9 @@ public class MainActivity extends AppCompatActivity {//comentario
                             }
                         }else{
                             if(sPa.equals(contrasenia)){
+                                txtCorreo.setText("");
+                                txtContrasenia.setText("");
+                                Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
                                 intent.putExtra("datoId",id);
                                 intent.putExtra("datoNombre",nombre);
