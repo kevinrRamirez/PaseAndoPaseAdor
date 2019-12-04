@@ -2,6 +2,9 @@ package com.example.paseandopaseador;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +26,7 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
     Button btnAcepta;
     Button btnIrPaseo;
     TextView txtDatos;
-    Codigos c;
+    Codigos c = new Codigos();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
 
     public void aceptarPaseo(View view)
     {
-        consultaDatosPaseo("http://192.168.100.119/prueba/select_all_contrato.php");
+        consultaDatosPaseo(c.direccionIP+"select_all_contrato.php");
         btnIrPaseo.setVisibility(View.VISIBLE);
     }
 
@@ -70,6 +73,7 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
                         hora_fin = jsonObject.getString("hora_fin");
                         costo = jsonObject.getString("costo");
 
+                        txtDatos.setText("Coordenadas de llegada \n"+latitud+"\n"+longitud);
                         /*
                         Intent intent = new Intent(PaseAndoNavi.this, SolicitudPaseoActivity.class);
                         intent.putExtra("datoIdContrato",id_contrato);
@@ -85,7 +89,7 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
 
                          */
 
-                        Toast.makeText(getApplicationContext(), id_contrato+latitud+costo, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Ir al paseo...", Toast.LENGTH_SHORT).show();
 
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -102,5 +106,22 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
         );
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonArrayRequest);
+    }
+
+    public void irDestino(View view)
+    {
+        try
+        {
+            // Launch Waze to look for Hawaii:
+            String url = "https://waze.com/ul?q="+latitud+"C"+longitud+"";
+            Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( url ) );
+            startActivity( intent );
+        }
+        catch ( ActivityNotFoundException ex  )
+        {
+            // If Waze is not installed, open it in Google Play:
+            Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "market://details?id=com.waze" ) );
+            startActivity(intent);
+        }
     }
 }
