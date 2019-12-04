@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {//comentario
     EditText txtCorreo,txtContrasenia;
     Switch swConecta;
     Button btnActualiza;
-    Codigos c;
+    Codigos c = new Codigos();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {//comentario
                         nombre = jsonObject.getString("nombre_paseador");
                         correo = jsonObject.getString("correo_paseador");
                         contrasenia = jsonObject.getString("contrsenia_paseador");
-                        Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
                         String sCo=txtCorreo.getText().toString();
                         String sPa= txtContrasenia.getText().toString();
                         //validaciones
@@ -110,7 +109,10 @@ public class MainActivity extends AppCompatActivity {//comentario
                             }else if(!(sPa.length() >= 6)){
                                 Toast.makeText(getApplicationContext(), "Se requiere una contraseña mayor a 5 caracteres", Toast.LENGTH_LONG).show();
                             }else{
-                                if(sCo.equals(contrasenia)){
+                                if(sPa.equals(contrasenia)){
+                                    txtCorreo.setText("");
+                                    txtContrasenia.setText("");
+                                    Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
                                     intent.putExtra("datoId",id);
                                     intent.putExtra("datoNombre",nombre);
@@ -122,7 +124,10 @@ public class MainActivity extends AppCompatActivity {//comentario
                                 }
                             }
                         }else{
-                            if(sCo.equals(contrasenia)){
+                            if(sPa.equals(contrasenia)){
+                                txtCorreo.setText("");
+                                txtContrasenia.setText("");
+                                Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
                                 intent.putExtra("datoId",id);
                                 intent.putExtra("datoNombre",nombre);
@@ -194,6 +199,8 @@ public class MainActivity extends AppCompatActivity {//comentario
 
     public void ctrlBtnReg(View view)
     {
+        txtCorreo.setText("");
+        txtContrasenia.setText("");
         Intent intent = new Intent(view.getContext(), Registro.class);
         startActivity(intent);
     }
