@@ -199,6 +199,8 @@ public class MainActivity extends AppCompatActivity {//comentario
 
     public void ctrlBtnReg(View view)
     {
+        txtCorreo.setText("");
+        txtContrasenia.setText("");
         Intent intent = new Intent(view.getContext(), Registro.class);
         startActivity(intent);
     }
