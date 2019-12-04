@@ -85,23 +85,14 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
                         hora_fin = jsonObject.getString("hora_fin");
                         costo = jsonObject.getString("costo");
 
-                        txtDatos.setText("Coordenadas de llegada \n" + latitud + "\n" + longitud);
-                        /*
-                        Intent intent = new Intent(PaseAndoNavi.this, SolicitudPaseoActivity.class);
-                        intent.putExtra("datoIdContrato",id_contrato);
-                        intent.putExtra("datoLatitud",latitud);
-                        intent.putExtra("datoLongitud",longitud);
-                        intent.putExtra("datoIdPaseador",id_paseador);
-                        intent.putExtra("datoIdMascota",id_mascota);
-                        intent.putExtra("datoHoraIni",hora_inicio);
-                        intent.putExtra("datoHoraFin",hora_fin);
-                        intent.putExtra("datoCosto",costo);
-                        startActivity(intent);
-                        //Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
 
-                         */
 
-                        Toast.makeText(getApplicationContext(), "Ir al paseo...", Toast.LENGTH_SHORT).show();
+                        /*txtDatos.setText("Coordenadas de llegada: \n" + latitud + "," + longitud + "\n" + "De: "+hora_inicio+"-"+hora_fin+" hrs");
+                        Toast.makeText(getApplicationContext(), "Ir al paseo...", Toast.LENGTH_SHORT).show();*/
+
+
+                        buscarMascota(c.direccionIP + "buscar_mascota.php?id_mascota=" + id_mascota);
+
 
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -146,4 +137,88 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+
+
+
+    String idMas ;
+    String idDue;
+    String nombreMas;
+    String tamanio;
+    String cuidados;
+    String raza;
+    String edad;
+    String seguro;
+    public void buscarMascota(String URL) {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                JSONObject jsonObject;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        jsonObject = response.getJSONObject(i);
+                        idMas = jsonObject.getString("id_mascota");
+                        idDue = jsonObject.getString("id_duenio");
+                        nombreMas = jsonObject.getString("nombre_mascota");
+                        tamanio = jsonObject.getString("tamanio");
+                        cuidados = jsonObject.getString("cuidados");
+                        raza = jsonObject.getString("raza");
+                        edad = jsonObject.getString("edad");
+                        seguro = jsonObject.getString("id_seguro");
+                        buscarDuenio(c.direccionIP+"buscar_duenio_id.php?id_duenio="+idDue+"");
+                        //Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error en la conexion", Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonArrayRequest);
+    }
+
+
+    public void buscarDuenio(String URL) {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                JSONObject jsonObject;
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        String d_id,d_nombre,d_correo,d_contrasenia,d_pasep;
+                        jsonObject = response.getJSONObject(i);
+                        d_id = jsonObject.getString("id_duenio");
+                        d_nombre = jsonObject.getString("nombre");
+                        d_correo = jsonObject.getString("correo");
+                        d_contrasenia = jsonObject.getString("contrasenia");
+                        d_pasep = jsonObject.getString("paseo");
+
+                        txtDatos.setText("Coordenadas de llegada: " + latitud + "," + longitud + "\n" + "De: "
+                                +hora_inicio+"-"+hora_fin+" hrs"+"\nMascota: "+nombreMas+"\nDel usuario: "+d_nombre);
+                        Toast.makeText(getApplicationContext(), "Ir al paseo...", Toast.LENGTH_SHORT).show();
+
+
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error en la conexion xd", Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonArrayRequest);
+    }
+
+
 }
