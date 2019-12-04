@@ -34,7 +34,7 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
         btnIrPaseo.setVisibility(View.INVISIBLE);
         txtDatos = (TextView) findViewById(R.id.txtDatos);
 
-        consultaDatosPaseo(c.direccionIP+"select_all_contrato.php");
+
     }
 
     String id_contrato;
@@ -46,6 +46,12 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
     String hora_fin;
     String costo;
     RequestQueue requestQueue;
+
+    public void aceptarPaseo(View view)
+    {
+        consultaDatosPaseo(c.direccionIP+"select_all_contrato.php");
+        btnIrPaseo.setVisibility(View.VISIBLE);
+    }
 
     public void consultaDatosPaseo(String URL) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {

@@ -75,15 +75,15 @@ public class MainActivity extends AppCompatActivity {//comentario
         } else {
             // Permission has already been granted
         }
-        txtCorreo = (EditText) findViewById(R.id.txtCorreo);
+        txtCorreo = (EditText) findViewById(R.id.txtCorreoL);
         txtContrasenia = (EditText) findViewById(R.id.txtContrasenia);
         btnActualiza = (Button) findViewById(R.id.btnActualizarNav);
         swConecta = (Switch) findViewById(R.id.swConetate);
     }
     public void ctrlBotonIngresar(View view)
     {
-        String url = c.direccionIP+"buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
-        buscarPaseador(url);
+        String url2 = "http://192.168.43.84/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
+        buscarPaseador(url2);
     }
 
     public void buscarPaseador(String URL) {

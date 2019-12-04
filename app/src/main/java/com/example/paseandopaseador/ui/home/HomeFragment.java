@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -35,6 +36,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +57,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private LocationManager locationManager;
     JSONObject jso;
     Button btnActualizar;
-    Codigos c;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -147,6 +149,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
+
 
 
     }

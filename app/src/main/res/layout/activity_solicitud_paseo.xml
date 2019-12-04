@@ -13,6 +13,7 @@
         android:layout_height="53dp"
         android:layout_marginBottom="156dp"
         android:background="@drawable/bg_boton_solido"
+        android:onClick="aceptarPaseo"
         android:text="@string/aceptar_paseo"
         android:textColor="@color/colorPrimary2"
         android:textSize="20dp"
