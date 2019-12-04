@@ -49,7 +49,7 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
 
     public void aceptarPaseo(View view)
     {
-        consultaDatosPaseo(c.direccionIP+"select_all_contrato.php");
+        consultaDatosPaseo("http://192.168.100.119/prueba/select_all_contrato.php");
         btnIrPaseo.setVisibility(View.VISIBLE);
     }
 
@@ -70,8 +70,6 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
                         hora_fin = jsonObject.getString("hora_fin");
                         costo = jsonObject.getString("costo");
 
-
-                        txtDatos.setText("Latitud"+latitud+"\n"+"Longitud"+longitud);
                         /*
                         Intent intent = new Intent(PaseAndoNavi.this, SolicitudPaseoActivity.class);
                         intent.putExtra("datoIdContrato",id_contrato);
@@ -87,6 +85,7 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
 
                          */
 
+                        Toast.makeText(getApplicationContext(), id_contrato+latitud+costo, Toast.LENGTH_SHORT).show();
 
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
