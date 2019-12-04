@@ -1,7 +1,18 @@
 package com.example.paseandopaseador;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,12 +29,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class SolicitudPaseoActivity extends AppCompatActivity {
 
     Button btnAcepta;
     Button btnIrPaseo;
     TextView txtDatos;
-    Codigos c;
+    Codigos c = new Codigos();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +60,11 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
     String hora_inicio;
     String hora_fin;
     String costo;
+    String direc;
     RequestQueue requestQueue;
 
-    public void aceptarPaseo(View view)
-    {
-        consultaDatosPaseo("http://192.168.100.119/prueba/select_all_contrato.php");
+    public void aceptarPaseo(View view) {
+        consultaDatosPaseo(c.direccionIP + "select_all_contrato.php");
         btnIrPaseo.setVisibility(View.VISIBLE);
     }
 
@@ -70,6 +85,7 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
                         hora_fin = jsonObject.getString("hora_fin");
                         costo = jsonObject.getString("costo");
 
+                        txtDatos.setText("Coordenadas de llegada \n" + latitud + "\n" + longitud);
                         /*
                         Intent intent = new Intent(PaseAndoNavi.this, SolicitudPaseoActivity.class);
                         intent.putExtra("datoIdContrato",id_contrato);
@@ -85,7 +101,7 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
 
                          */
 
-                        Toast.makeText(getApplicationContext(), id_contrato+latitud+costo, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Ir al paseo...", Toast.LENGTH_SHORT).show();
 
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -102,5 +118,32 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
         );
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonArrayRequest);
+    }
+
+
+    public void irDestino(View view) {
+
+        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+        try {
+            List<Address> direccion = geocoder.getFromLocation(Double.parseDouble(latitud), Double.parseDouble(longitud),1);
+            direc = direccion.get(0).getAddressLine(0);
+            //txtUbicacion.setText(direc);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try
+        {
+            // Launch Waze to look for Hawaii:
+            String url = "https://waze.com/ul?q="+direc+"";
+            Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( url ) );
+            startActivity( intent );
+        }
+        catch ( ActivityNotFoundException ex  )
+        {
+            // If Waze is not installed, open it in Google Play:
+            Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "market://details?id=com.waze" ) );
+            startActivity(intent);
+        }
     }
 }
