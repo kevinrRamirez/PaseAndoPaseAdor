@@ -83,8 +83,10 @@ public class MainActivity extends AppCompatActivity {//comentario
     public void ctrlBotonIngresar(View view)
     {
         //String url2 = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
-        String url2 = c.direccionIP+"buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
-        buscarPaseador(url2);
+       // String url2 = c.direccionIP+"buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
+        //buscarPaseador(url2);
+        Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
+        startActivity(intent);
     }
 
     public void buscarPaseador(String URL) {

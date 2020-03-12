@@ -88,7 +88,7 @@ public class PaseAndoNavi extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //linea para trabajar solo con la orientacion vertical
-
+/*
         Bundle datoCorreo = getIntent().getExtras();
         String correo = datoCorreo.getString("datoCorreo");
         String nombre = datoCorreo.getString("datoNombre");
@@ -100,6 +100,8 @@ public class PaseAndoNavi extends AppCompatActivity {
         txtNombreNav = (TextView) headerView.findViewById(R.id.txtNombreNav);
         txtNombreNav.setText(nombre);
         swConecta = (Switch) findViewById(R.id.swConetate);
+
+ */
 
     }
 

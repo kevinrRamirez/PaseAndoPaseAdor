@@ -33,12 +33,14 @@ public class PerfilFragment extends Fragment  {
             }
         });
 
-         */
+
         Bundle dato = getActivity().getIntent().getExtras();
         txtCorreo = (TextView) root.findViewById(R.id.txtCorreoElectronico);
         txtCorreo.setText(dato.getString("datoCorreo"));
         txtNombre = (TextView) root.findViewById(R.id.txtNombreUsuario);
         txtNombre.setText(dato.getString("datoNombre"));
+
+         */
 
         return root;
     }
