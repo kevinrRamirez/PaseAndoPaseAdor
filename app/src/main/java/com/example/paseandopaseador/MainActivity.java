@@ -1,14 +1,18 @@
 package com.example.paseandopaseador;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +27,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +49,9 @@ public class MainActivity extends AppCompatActivity {//comentario
     Switch swConecta;
     Button btnActualiza;
     Codigos c = new Codigos();
+
+    private FirebaseAuth mAuth;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +90,72 @@ public class MainActivity extends AppCompatActivity {//comentario
         txtContrasenia = (EditText) findViewById(R.id.txtContrasenia);
         btnActualiza = (Button) findViewById(R.id.btnActualizarNav);
         swConecta = (Switch) findViewById(R.id.swConetate);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
+        progressDialog = new ProgressDialog(this);
     }
     public void ctrlBotonIngresar(View view)
     {
         //String url2 = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
        // String url2 = c.direccionIP+"buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
         //buscarPaseador(url2);
-        Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
-        startActivity(intent);
+
+        final String str_correo = txtCorreo.getText().toString().trim();
+        String str_contrasena = txtContrasenia.getText().toString().trim();
+
+        //obtenemos los valores de los EditText
+        Codigos c = new Codigos ();
+        boolean vacios = false;
+        //validamos que no esten vacias
+        if (TextUtils.isEmpty(str_correo)){
+            txtCorreo.setError("Requerido");
+            vacios=true;
+        }
+        if (TextUtils.isEmpty(str_contrasena)){
+            txtContrasenia.setError("Requerido");
+            vacios=true;
+        }
+        if (vacios){
+            return;
+        }
+        if (!c.validacionCorreo(str_correo)){
+            txtCorreo.setError("Invalido");
+            return;
+        }
+        if (str_contrasena.length()<6){
+            txtContrasenia.setError("Minimo 6 caracteres");
+            return;
+        }
+        progressDialog.setMessage("Procesando...");
+        progressDialog.show();
+        //creacion del nuevo usuario
+        mAuth.signInWithEmailAndPassword(str_correo, str_contrasena)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        //checking if success
+                        if(task.isSuccessful()){
+                            if (mAuth.getCurrentUser().isEmailVerified()){
+                                Toast.makeText(MainActivity.this,"Bienvenido: "+ str_correo,Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
+                                startActivity(intent);
+                            }else{
+                                Toast.makeText(MainActivity.this,"Correo sin verificar",Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            Toast.makeText(MainActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                        progressDialog.dismiss();
+                    }
+                });
+
+
+
+
+
+
     }
 
     public void buscarPaseador(String URL) {
@@ -208,6 +277,35 @@ public class MainActivity extends AppCompatActivity {//comentario
         startActivity(intent);
     }
 
+    public void ctrlReestablecerPass(View view)
+    {
+
+        //obtenemos los valores de los EditText
+        final String str_correo = txtCorreo.getText().toString().trim();
+        Codigos c = new Codigos ();
+        if (TextUtils.isEmpty(str_correo)){
+            txtCorreo.setError("Requerido");
+            return;
+        }
+        if (!c.validacionCorreo(str_correo)){
+            Toast.makeText(getApplicationContext(), "Correo invalido", Toast.LENGTH_LONG).show();
+            return;
+        }
+        progressDialog.setMessage("Procesando...");
+        progressDialog.show();
+        mAuth.sendPasswordResetEmail(str_correo).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Dialog dialog = new Dialog("Reestablecer contraseña","Se te ha enciado un correo para reestablecer la contraseña");
+                    dialog.show(getSupportFragmentManager(),"");
+                }else{
+                    Toast.makeText(MainActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                }
+                progressDialog.dismiss();
+            }
+        });
+    }
 
     public void actualizar()
     {
