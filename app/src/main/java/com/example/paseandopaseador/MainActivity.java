@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {//comentario
                         if(task.isSuccessful()){
                             if (mAuth.getCurrentUser().isEmailVerified()){
                                 Toast.makeText(MainActivity.this,"Bienvenido: "+ str_correo,Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(MainActivity.this, PaseAndoNavi.class);
+                                Intent intent = new Intent(getApplication(), PaseAndoNavi.class);
                                 startActivity(intent);
                             }else{
                                 Toast.makeText(MainActivity.this,"Correo sin verificar",Toast.LENGTH_LONG).show();
@@ -150,12 +150,6 @@ public class MainActivity extends AppCompatActivity {//comentario
                         progressDialog.dismiss();
                     }
                 });
-
-
-
-
-
-
     }
 
     public void buscarPaseador(String URL) {

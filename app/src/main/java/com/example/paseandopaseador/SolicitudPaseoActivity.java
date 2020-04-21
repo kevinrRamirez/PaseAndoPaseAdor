@@ -1,9 +1,11 @@
 package com.example.paseandopaseador;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,14 +26,25 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class SolicitudPaseoActivity extends AppCompatActivity {
 
@@ -39,19 +52,6 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
     Button btnIrPaseo;
     TextView txtDatos;
     Codigos c = new Codigos();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_solicitud_paseo);
-        btnAcepta = (Button) findViewById(R.id.btnAcpetaPas);
-        btnIrPaseo = (Button) findViewById(R.id.btnPaseoListo);
-        btnIrPaseo.setVisibility(View.INVISIBLE);
-        txtDatos = (TextView) findViewById(R.id.txtDatos);
-
-
-    }
-
     String id_contrato;
     String latitud;
     String longitud;
@@ -62,10 +62,93 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
     String costo;
     String direc;
     RequestQueue requestQueue;
+    FirebaseUser firebaseUser;
+    FirebaseFirestore db;
+
+    private ProgressDialog progressDialog;
+    public String str_selectPaseo = "";
+    public String paseoId = "";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_solicitud_paseo);
+        btnAcepta = (Button) findViewById(R.id.btnAcpetaPas);
+        btnIrPaseo = (Button) findViewById(R.id.btnPaseoListo);
+        btnIrPaseo.setVisibility(View.INVISIBLE);
+        txtDatos = (TextView) findViewById(R.id.txtDatos);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        progressDialog = new ProgressDialog(this);
+        selectPaseo();
+
+
+    }
+
+
+
+    public  void selectPaseo(){
+        str_selectPaseo = "";
+        progressDialog.setMessage("Procesando...");
+        progressDialog.show();
+        Query query = db.collection("paseos").whereEqualTo("id_paseador", "");
+        query
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Exito", Toast.LENGTH_LONG).show();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                paseoId = document.getId();
+                                latitud =  document.get("latitud").toString();
+                                longitud = document.get("longitud").toString();
+                                str_selectPaseo
+                                        +=  "id_usuario: \t" + document.get("id_usuario").toString()+ "\n"
+                                        + "latitud: \t\t\t\t" + latitud + "\n"
+                                        + "longitud: \t\t\t\t" + longitud  + "\n"
+                                        + "duracion: \t" + document.get("duracion").toString() + "\n"
+                                        + "hora_inico: \t\t\t\t" + document.get("hora_inico").toString() + "\n"
+                                        + "hora_fin: \t\t\t\t" + document.get("hora_fin").toString() + "\n";
+                                break;
+                            }
+                            progressDialog.dismiss();
+                            txtDatos.setText(str_selectPaseo);
+                        } else {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
 
     public void aceptarPaseo(View view) {
-        consultaDatosPaseo(c.direccionIP + "select_all_contrato.php");
-        btnIrPaseo.setVisibility(View.VISIBLE);
+        //consultaDatosPaseo(c.direccionIP + "select_all_contrato.php");
+        if (str_selectPaseo == ""){
+            Toast.makeText(getApplicationContext(), "No hay paseos disponibles", Toast.LENGTH_LONG).show();
+            return;
+        }
+        //se hace el update para registrar que el paseo ay tiene paseador
+        progressDialog.setMessage("Procesando...");
+        progressDialog.show();
+        DocumentReference docRef = db.collection("paseos").document(paseoId);
+        Map<String,Object> updates = new HashMap<>();
+        updates.put("id_paseador", firebaseUser.getUid());
+        docRef.update(updates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Proceso exitoso", Toast.LENGTH_LONG).show();
+                            btnIrPaseo.setVisibility(View.VISIBLE);
+                        }else{
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
     public void consultaDatosPaseo(String URL) {

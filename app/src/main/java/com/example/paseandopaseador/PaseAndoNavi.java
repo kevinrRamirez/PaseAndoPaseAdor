@@ -88,20 +88,20 @@ public class PaseAndoNavi extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //linea para trabajar solo con la orientacion vertical
-/*
-        Bundle datoCorreo = getIntent().getExtras();
-        String correo = datoCorreo.getString("datoCorreo");
-        String nombre = datoCorreo.getString("datoNombre");
-        id = datoCorreo.getString("datoId");
+
+        //Bundle datoCorreo = getIntent().getExtras();
+        //String correo = datoCorreo.getString("datoCorreo");
+        //String nombre = datoCorreo.getString("datoNombre");
+        //id = datoCorreo.getString("datoId");
         View headerView = navigationView.getHeaderView(0);
         txtCorreoNav = (TextView) headerView.findViewById(R.id.txtCorreoNav);
-        txtCorreoNav.setText(correo);
+        txtCorreoNav.setText("sdv");
 
         txtNombreNav = (TextView) headerView.findViewById(R.id.txtNombreNav);
-        txtNombreNav.setText(nombre);
+        txtNombreNav.setText("vzdfv");
         swConecta = (Switch) findViewById(R.id.swConetate);
 
- */
+
 
     }
 
@@ -143,7 +143,7 @@ public class PaseAndoNavi extends AppCompatActivity {
 
     public void actualizar(View view)
     {
-     consultaDatosPaseo(c.direccionIP+"select_all_contrato.php");
+     //consultaDatosPaseo(c.direccionIP+"select_all_contrato.php");
     }
 
     String id_contrato;
@@ -155,6 +155,7 @@ public class PaseAndoNavi extends AppCompatActivity {
     String hora_fin;
     String costo;
 
+    /*
     public void consultaDatosPaseo(String URL) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
             @Override
@@ -162,6 +163,7 @@ public class PaseAndoNavi extends AppCompatActivity {
                 JSONObject jsonObject;
                 for (int i = 0; i < response.length(); i++) {
                     try {
+
                         jsonObject = response.getJSONObject(i);
                         id_contrato = jsonObject.getString("id_contrato");
                         latitud = jsonObject.getString("latitud");
@@ -186,7 +188,7 @@ public class PaseAndoNavi extends AppCompatActivity {
                         startActivity(intent);
                         //Toast.makeText(getApplicationContext(), "Iniciando...", Toast.LENGTH_SHORT).show();
 
-                         */
+
 
 
                     } catch (JSONException e) {
@@ -205,5 +207,5 @@ public class PaseAndoNavi extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonArrayRequest);
     }
-
+*/
 }
