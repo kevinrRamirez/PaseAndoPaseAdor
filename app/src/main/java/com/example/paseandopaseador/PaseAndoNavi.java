@@ -107,6 +107,12 @@ public class PaseAndoNavi extends AppCompatActivity {
 
     }
 
+    public void ctrlBtnMiServicio(View view) {
+        Toast.makeText(getApplicationContext(), "Holi", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplication(), SolicitudPaseoActivity.class);
+        startActivity(intent);
+    }
+
     public void prbBotonActualizar(View view) {
         Intent intent = new Intent(view.getContext(), SolicitudPaseoActivity.class);
         startActivity(intent);

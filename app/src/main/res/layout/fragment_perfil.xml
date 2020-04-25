@@ -36,4 +36,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtNombreUsuario" />
 
+    <Button
+        android:id="@+id/btnMiServicio"
+        android:layout_width="153dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bg_boton_solido"
+        android:gravity="center"
+        android:onClick="ctrlBtnMiServicio"
+        android:text="@string/Mi_servicio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCorreoElectronico" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

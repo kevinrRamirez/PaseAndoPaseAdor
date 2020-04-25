@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -41,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +50,7 @@ import java.util.Map;
 
 public class SolicitudPaseoActivity extends AppCompatActivity {
 
-    Button btnAcepta;
+    Button btnAcpetaPas;
     Button btnIrPaseo;
     TextView txtDatos;
     Codigos c = new Codigos();
@@ -69,11 +71,12 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
     public String str_selectPaseo = "";
     public String paseoId = "";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solicitud_paseo);
-        btnAcepta = (Button) findViewById(R.id.btnAcpetaPas);
+        btnAcpetaPas = (Button) findViewById(R.id.btnAcpetaPas);
         btnIrPaseo = (Button) findViewById(R.id.btnPaseoListo);
         btnIrPaseo.setVisibility(View.INVISIBLE);
         txtDatos = (TextView) findViewById(R.id.txtDatos);
@@ -89,35 +92,84 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
 
 
     public  void selectPaseo(){
-        str_selectPaseo = "";
+
         progressDialog.setMessage("Procesando...");
         progressDialog.show();
-        Query query = db.collection("paseos").whereEqualTo("id_paseador", "");
-        query
+
+        CollectionReference cR = db.collection("paseos");
+        cR
+                .whereEqualTo("id_paseador",firebaseUser.getUid())
+                //.whereEqualTo("id_paseador","r4DDJlMRKmNMR68cfpQiJPK8m9R2")
+                .whereIn("status", Arrays.asList("1", "2"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Exito", Toast.LENGTH_LONG).show();
+                        if (task.isSuccessful()){
+                            String temp = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                paseoId = document.getId();
-                                latitud =  document.get("latitud").toString();
-                                longitud = document.get("longitud").toString();
-                                str_selectPaseo
-                                        +=  "id_usuario: \t" + document.get("id_usuario").toString()+ "\n"
-                                        + "latitud: \t\t\t\t" + latitud + "\n"
-                                        + "longitud: \t\t\t\t" + longitud  + "\n"
-                                        + "duracion: \t" + document.get("duracion").toString() + "\n"
-                                        + "hora_inico: \t\t\t\t" + document.get("hora_inico").toString() + "\n"
-                                        + "hora_fin: \t\t\t\t" + document.get("hora_fin").toString() + "\n";
+                                temp = document.getId();
                                 break;
                             }
-                            progressDialog.dismiss();
-                            txtDatos.setText(str_selectPaseo);
-                        } else {
+                            if (!temp.equals("")){
+                                progressDialog.dismiss();
+                                txtDatos.setText("*****   Tienes un servicio en proceso   *****\n*****       FAVOR DE REALIZARLO :)      *****");
+                                btnAcpetaPas.setEnabled(false);
+                                btnAcpetaPas.setVisibility(View.INVISIBLE);
+                                return;
+                            }else{
+                                CollectionReference collectionReference = db.collection("paseos");
+                                collectionReference
+                                        .whereEqualTo("status", "0")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    //Toast.makeText(getApplicationContext(), "Exito", Toast.LENGTH_LONG).show();
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        if (!document.get("id_usuario").toString().equals(firebaseUser.getUid())){
+                                                        //if (!document.get("id_usuario").toString().equals("r4DDJlMRKmNMR68cfpQiJPK8m9R2")){
+                                                            paseoId = document.getId();
+                                                            latitud =  document.get("latitud").toString();
+                                                            longitud = document.get("longitud").toString();
+                                                            str_selectPaseo
+                                                                    = "Id_usuario: " + document.get("id_usuario").toString()+ "\n"
+                                                                    + "Latitud:    " + latitud + "\n"
+                                                                    + "Longitud:   " + longitud  + "\n"
+                                                                    + "Duracion:   " + document.get("duracion").toString() + " min\n"
+                                                                    + "Hora inico: " + document.get("hora_inico").toString() + "\n"
+                                                                    + "Hora fin:   " + document.get("hora_fin").toString() + "\n"
+                                                                    + "Pago:        $" + document.get("costo").toString() + ".00 mxn\n";
+                                                            break;
+                                                        }
+                                                    }
+                                                    progressDialog.dismiss();
+                                                    if (str_selectPaseo.equals("")){
+                                                        txtDatos.setText("*****   No hay paseos disponibles   *****");
+                                                        btnAcpetaPas.setEnabled(false);
+                                                        btnAcpetaPas.setVisibility(View.INVISIBLE);
+                                                        return;
+                                                    }else{
+                                                        txtDatos.setText(str_selectPaseo);
+                                                        return;
+                                                    }
+                                                } else {
+                                                    progressDialog.dismiss();
+                                                    btnAcpetaPas.setEnabled(false);
+                                                    btnAcpetaPas.setVisibility(View.INVISIBLE);
+                                                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                    return;
+                                                }
+                                            }
+                                        });
+                            }
+                        }else{
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            btnAcpetaPas.setEnabled(false);
+                            btnAcpetaPas.setVisibility(View.INVISIBLE);
+                            return;
                         }
                     }
                 });
@@ -135,6 +187,8 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
         DocumentReference docRef = db.collection("paseos").document(paseoId);
         Map<String,Object> updates = new HashMap<>();
         updates.put("id_paseador", firebaseUser.getUid());
+        updates.put("id", paseoId);
+        updates.put("status", "1");
         docRef.update(updates)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

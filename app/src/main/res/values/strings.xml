@@ -45,5 +45,6 @@
     <string name="aceptar">Aceptar</string>
     <string name="ir_al_paseo">Ir al Paseo</string>
     <string name="Restablecer_contraseña">Restablecer contraseña</string>
+    <string name="Mi_servicio">Mi servicio</string>
 
 </resources>
