@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SolicitudPaseoActivity"></activity>
+        <activity android:name=".MiServicioActivity"></activity>
+        <activity android:name=".SolicitudPaseoActivity" />
         <activity android:name=".Registro" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
