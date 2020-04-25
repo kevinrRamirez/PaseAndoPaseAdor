@@ -46,5 +46,7 @@
     <string name="ir_al_paseo">Ir al Paseo</string>
     <string name="Restablecer_contraseña">Restablecer contraseña</string>
     <string name="Mi_servicio">Mi servicio</string>
+    <string name="Home">Home</string>
+    <string name="Ok">Ok</string>
 
 </resources>

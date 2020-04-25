@@ -108,67 +108,11 @@ public class MainActivity extends AppCompatActivity {//comentario
         progressDialog = new ProgressDialog(this);
         db = FirebaseFirestore.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
     }
+
+
     public void ctrlBotonIngresar(View view)
-    {
-        progressDialog.setMessage("Procesando...");
-        progressDialog.show();
-        CollectionReference collectionReference = db.collection("paseos");
-        collectionReference
-                .whereIn("status", Arrays.asList("1","2"))
-                //.whereEqualTo("id_paseador", firebaseUser.getUid())
-                .whereEqualTo("id_paseador", "r4DDJlMRKmNMR68cfpQiJPK8m9R2")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            String str_status = "";
-                            String str_infoPaseo = "";
-                            String str_idPaseo = "";
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                str_status = document.get("status").toString();
-                                str_idPaseo = document.get("id").toString();
-                                str_infoPaseo = "***********        DETALLES         **********\n\n"+
-                                        "Pago:        $" + document.get("costo").toString() + ".00 mxn\n"+
-                                        "Duracion:    "+document.get("duracion").toString()+"\n"+
-                                        "Hora inicio: "+document.get("hora_inico").toString()+"\n"+
-                                        "Hora fin:    "+document.get("hora_fin").toString()+"\n\n";
-                            }
-                            if (str_status.equals("")){
-                                progressDialog.dismiss();
-                                Dialog dialog = new Dialog("Aviso","No tienes ningun servicio activo por el momento");
-                                dialog.show(getSupportFragmentManager(),"");
-                                return;
-                            }else if (str_status.equals("0")){
-                                str_infoPaseo += "****  El paseo no ha sido aceptado aun  ****";
-                            }else if (str_status.equals("1")){
-                                str_infoPaseo += "*****        Paseador en camino        *****";
-                            }else if (str_status.equals("2")){
-                                str_infoPaseo += "*** Paseo en proceso. Puedes ver el mapa ***";
-                            }
-                            progressDialog.dismiss();
-                            /*
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putString("str_idPaseo",str_idPaseo);
-                            editor.putString("str_infoPaseo",str_infoPaseo);
-                            editor.putString("str_status",str_status);
-                            editor.commit();
-                            Intent intent = new Intent(getApplication(), SeguimientoActivity.class);
-                            startActivity(intent);
-
-                             */
-                            Toast.makeText(getApplicationContext(), "Exito: "+str_status, Toast.LENGTH_LONG).show();
-                        } else {
-                            progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-
-    }
-
-    public void ctrlBotonIngresar1(View view)
     {
         //String url2 = "http://192.168.100.119/prueba/buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";
        // String url2 = c.direccionIP+"buscar_paseador.php?correo="+txtCorreo.getText().toString()+"";

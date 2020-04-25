@@ -1,5 +1,6 @@
 package com.example.paseandopaseador;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,7 +22,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -40,6 +49,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +63,10 @@ public class PaseAndoNavi extends AppCompatActivity {
     Switch swConecta;
     String id;
     Codigos c;
+
+    private ProgressDialog progressDialog;
+    FirebaseFirestore db;
+    FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,14 +117,59 @@ public class PaseAndoNavi extends AppCompatActivity {
         txtNombreNav.setText(correo);
         swConecta = (Switch) findViewById(R.id.swConetate);
 
+        progressDialog = new ProgressDialog(this);
+        db = FirebaseFirestore.getInstance();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
 
 
     }
 
     public void ctrlBtnMiServicio(View view) {
-        Toast.makeText(getApplicationContext(), "Holi", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getApplication(), SolicitudPaseoActivity.class);
-        startActivity(intent);
+        progressDialog.setMessage("Procesando...");
+        progressDialog.show();
+        CollectionReference collectionReference = db.collection("paseos");
+        collectionReference
+                .whereIn("status", Arrays.asList("1","2"))
+                .whereEqualTo("id_paseador", firebaseUser.getUid())
+                //.whereEqualTo("id_paseador", "r4DDJlMRKmNMR68cfpQiJPK8m9R2")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String str_status = "";
+                            String str_infoPaseo = "";
+                            String str_idPaseo = "";
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                str_status = document.get("status").toString();
+                                str_idPaseo = document.get("id").toString();
+                                str_infoPaseo = "***********        DETALLES         **********\n\n"+
+                                        "Pago:        $" + document.get("costo").toString() + ".00 mxn\n"+
+                                        "Duracion:    "+document.get("duracion").toString()+"min\n"+
+                                        "Hora inicio: "+document.get("hora_inico").toString()+"\n"+
+                                        "Hora fin:    "+document.get("hora_fin").toString()+"\n\n" +
+                                        "**********************************************\n\n";
+                            }
+                            if (str_status.equals("")){
+                                progressDialog.dismiss();
+                                Dialog dialog = new Dialog("Aviso","No tienes ningun servicio activo por el momento");
+                                dialog.show(getSupportFragmentManager(),"");
+                                return;
+                            }
+                            progressDialog.dismiss();
+                            Intent intent = new Intent(getApplication(), MiServicioActivity.class);
+                            intent.putExtra("str_idPaseo",str_idPaseo);
+                            intent.putExtra("str_infoPaseo",str_infoPaseo);
+                            intent.putExtra("str_status",str_status);
+                            startActivity(intent);
+
+                        } else {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
     public void prbBotonActualizar(View view) {
