@@ -57,7 +57,7 @@ public class MiServicioActivity extends AppCompatActivity {
             if (str_status.equals("1")){
                 temp += " Deberías estar en camino al destino\n" +
                         "      para llegar a tiempo :)      \n\n" +
-                        "Presiona OK cuando llegado hallas llegado";
+                        "Presiona OK cuando llegado hayas llegado";
             }else if (str_status.equals("2")){
                 temp += "        Es hora de dar un buen servicio :) \n\n" +
                         "Presiona OK si ya regresaste al perro a su hogar";
@@ -81,11 +81,13 @@ public class MiServicioActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
-                            progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Proceso exitoso", Toast.LENGTH_LONG).show();
-                        }else{
                             progressDialog.dismiss();
+                            finish();
+                        }else{
                             Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();
+                            finish();
                         }
                     }
                 });

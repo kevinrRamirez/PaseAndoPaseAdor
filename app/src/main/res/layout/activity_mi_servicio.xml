@@ -34,6 +34,7 @@
                 android:background="@drawable/bg_boton_solido"
                 android:onClick="ctrlBtnOk"
                 android:text="@string/Ok"
+                android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

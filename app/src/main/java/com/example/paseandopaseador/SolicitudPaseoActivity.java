@@ -196,6 +196,7 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Proceso exitoso", Toast.LENGTH_LONG).show();
+                            btnAcpetaPas.setVisibility(View.INVISIBLE);
                             btnIrPaseo.setVisibility(View.VISIBLE);
                         }else{
                             progressDialog.dismiss();
