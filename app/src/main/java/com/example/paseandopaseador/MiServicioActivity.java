@@ -127,7 +127,7 @@ public class MiServicioActivity extends AppCompatActivity {
                                 updateGPS();
                                 //variable para detectar los cambios de ubicacion
                                 fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallBack, null);
-                            }else if (str_status.equals("3")){
+                            }else if (str_status.equals("2")){
                                 fusedLocationProviderClient.removeLocationUpdates(locationCallBack);
                             }
                             finish();
@@ -141,8 +141,9 @@ public class MiServicioActivity extends AppCompatActivity {
     }
 
     public void updateLatLon(String lat, String lon){
-        String str_idPaseo ="EUcfgCXaUhlGy0pyRm9Y";
-        DocumentReference docRef = db.collection("paseos").document(str_idPaseo);
+        //String aux ="EUcfgCXaUhlGy0pyRm9Y";
+        String aux =str_idPaseo;
+        DocumentReference docRef = db.collection("paseos").document(aux);
         Map<String,Object> updates = new HashMap<>();
         updates.put("latitudPaseador", lat);
         updates.put("longitudPaseador", lon);
