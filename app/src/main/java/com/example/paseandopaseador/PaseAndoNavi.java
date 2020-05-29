@@ -63,6 +63,7 @@ public class PaseAndoNavi extends AppCompatActivity {
     Switch swConecta;
     String id;
     Codigos c;
+    private SharedPreferences preferences;
 
     private ProgressDialog progressDialog;
     FirebaseFirestore db;
@@ -102,25 +103,38 @@ public class PaseAndoNavi extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //linea para trabajar solo con la orientacion vertical
-
+/*
         Bundle datoCorreo = getIntent().getExtras();
         String correo = datoCorreo.getString("datoCorreo");
         String nombre = datoCorreo.getString("datoNombre");
         //id = datoCorreo.getString("datoId");
 
+ */
+
+
+
 
         View headerView = navigationView.getHeaderView(0);
         txtCorreoNav = (TextView) headerView.findViewById(R.id.txtCorreoNav);
-        txtCorreoNav.setText(nombre);
+       // txtCorreoNav.setText(nombre);
 
         txtNombreNav = (TextView) headerView.findViewById(R.id.txtNombreNav);
-        txtNombreNav.setText(correo);
+        //txtNombreNav.setText(correo);
         swConecta = (Switch) findViewById(R.id.swConetate);
 
         progressDialog = new ProgressDialog(this);
         db = FirebaseFirestore.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        preferences = getSharedPreferences("Preferences", MODE_PRIVATE);
+        String correo = preferences.getString("correo_", null);
+        String nombre = preferences.getString("nombre_", null);
+
+        if (correo != null && nombre != null)
+        {
+            txtCorreoNav.setText(nombre);
+            txtNombreNav.setText(correo);
+        }
 
 
     }

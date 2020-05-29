@@ -33,6 +33,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.paseandopaseador.Codigos;
 import com.example.paseandopaseador.R;
 import com.example.paseandopaseador.SolicitudPaseoActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -41,6 +43,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,6 +67,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private LocationManager locationManager;
     JSONObject jso;
     Button btnActualizar;
+    private FusedLocationProviderClient mFusedLocationClient;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -82,6 +87,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         });
          */
 
+        //MANDAR UBICACION
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+
+
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         lblConecta = (TextView) v.findViewById(R.id.lblConectate);
         lblConecta.setVisibility(View.INVISIBLE);
@@ -93,6 +103,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         return v;
 
        // return root;
+    }
+
+
+    public void ubicacionEver()
+    {
+
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+
+                if (location != null)
+                {
+                    Log.e("Latitud: ", location.getLatitude() + "Long: "+ location.getLongitude());
+                    Toast.makeText(getActivity(),"Latitud: "+location.getLatitude() + "Long: "+ location.getLongitude(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

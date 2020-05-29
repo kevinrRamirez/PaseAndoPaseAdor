@@ -108,6 +108,8 @@ public class MainActivity extends AppCompatActivity {//comentario
         progressDialog = new ProgressDialog(this);
         db = FirebaseFirestore.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        preferences = getSharedPreferences("Preferences", MODE_PRIVATE);
+        validaSesion();
 
     }
 
@@ -173,8 +175,11 @@ public class MainActivity extends AppCompatActivity {//comentario
                                                     progressDialog.dismiss();
                                                     Toast.makeText(getApplication(),"Bienvenido "+nombre,Toast.LENGTH_LONG).show();
                                                     Intent intent = new Intent(getApplication(), PaseAndoNavi.class);
+                                                    /*
                                                     intent.putExtra("datoNombre",nombre);
                                                     intent.putExtra("datoCorreo",correo);
+                                                     */
+                                                    preferencias(correo,nombre);
                                                     startActivity(intent);
                                                     finish();
                                                 } else {
@@ -355,6 +360,14 @@ public class MainActivity extends AppCompatActivity {//comentario
         }
     }
 
+    private void preferencias(String str_cor, String str_nom)
+    {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("correo_",str_cor);
+        editor.putString("nombre_",str_nom);
+        editor.commit();
+    }
+
     public void actulizaIdContrato(String URL)
     {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
@@ -378,6 +391,19 @@ public class MainActivity extends AppCompatActivity {//comentario
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+    private void validaSesion()
+    {
+        String correo = preferences.getString("correo_", null);
+        String nombre = preferences.getString("nombre_", null);
+
+        if (correo != null && nombre != null)
+        {
+            finish();
+            Intent intent = new Intent(getApplication(), PaseAndoNavi.class);
+            startActivity(intent);
+        }
     }
 
 
