@@ -28,6 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
         android:text="@string/direccion"
         app:layout_constraintBottom_toTopOf="@+id/btnAcpetaPas"
         app:layout_constraintEnd_toEndOf="parent"

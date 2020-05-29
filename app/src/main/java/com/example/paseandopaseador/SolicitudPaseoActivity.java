@@ -113,7 +113,7 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
                             }
                             if (!temp.equals("")){
                                 progressDialog.dismiss();
-                                txtDatos.setText("*****   Tienes un servicio en proceso   *****\n*****       FAVOR DE REALIZARLO :)      *****");
+                                txtDatos.setText("*****   Tienes un servicio en proceso   *****\n*****       FAVOR DE REALIZARLO       *****");
                                 btnAcpetaPas.setEnabled(false);
                                 btnAcpetaPas.setVisibility(View.INVISIBLE);
                                 return;
@@ -134,8 +134,8 @@ public class SolicitudPaseoActivity extends AppCompatActivity {
                                                             latitud =  document.get("latitud").toString();
                                                             longitud = document.get("longitud").toString();
                                                             str_selectPaseo
-                                                                    = "Id_usuario: " + document.get("id_usuario").toString()+ "\n"
-                                                                    + "Latitud:    " + latitud + "\n"
+                                                                    // "Id_usuario: " + document.get("id_usuario").toString()+ "\n"
+                                                                    = "Latitud:    " + latitud + "\n"
                                                                     + "Longitud:   " + longitud  + "\n"
                                                                     + "Duracion:   " + document.get("duracion").toString() + " min\n"
                                                                     + "Hora inico: " + document.get("hora_inico").toString() + "\n"
