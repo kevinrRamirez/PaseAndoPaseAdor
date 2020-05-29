@@ -13,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -102,6 +103,15 @@ public class MiServicioActivity extends AppCompatActivity {
         };
         //fin location
         updateGPS();
+
+
+        //Para el popup
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int alto = displayMetrics.heightPixels;
+        int ancho = displayMetrics.widthPixels;
+
+        getWindow().setLayout((int)(ancho * 0.8), (int)(alto * 0.5));
 
     }
 

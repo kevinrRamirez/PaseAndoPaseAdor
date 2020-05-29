@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MiServicioActivity"></activity>
+        <activity android:name=".MiServicioActivity"
+            android:theme="@style/AppTheme.Popup"></activity>
         <activity android:name=".SolicitudPaseoActivity" />
         <activity android:name=".Registro" />
         <!--

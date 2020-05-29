@@ -116,8 +116,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 if (location != null)
                 {
                     Log.e("Latitud: ", location.getLatitude() + "Long: "+ location.getLongitude());
-                    Toast.makeText(getActivity(),"Latitud: "+location.getLatitude() + "Long: "+ location.getLongitude(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"Latitud: "+location.getLatitude() + " Long: "+ location.getLongitude(),Toast.LENGTH_SHORT).show();
                 }
+
+
+
             }
         });
     }
