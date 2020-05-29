@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         mapView = (MapView) v.findViewById(R.id.mapHome);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this); //this is important
-
+        ubicacionEver();
         return v;
 
        // return root;
